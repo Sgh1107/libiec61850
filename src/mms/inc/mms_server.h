@@ -169,14 +169,35 @@ typedef void (*MmsGetFileCompleteHandler)(void* parameter, MmsServerConnection c
 LIB61850_INTERNAL void
 MmsServer_installGetFileCompleteHandler(MmsServer self, MmsGetFileCompleteHandler handler, void* parameter);
 
-
+// MMS 文件服务
 typedef  enum {
-    MMS_FILE_ACCESS_TYPE_READ_DIRECTORY,
+    MMS_FILE_ACCESS_TYPE_READ_DIRECTORY,        // 0
     MMS_FILE_ACCESS_TYPE_OPEN,
     MMS_FILE_ACCESS_TYPE_OBTAIN,
     MMS_FILE_ACCESS_TYPE_DELETE,
     MMS_FILE_ACCESS_TYPE_RENAME
 } MmsFileServiceType;
+
+#if 1   // add enum -> string
+char* ser2str(const MmsFileServiceType service)
+{
+    switch (service)
+    {
+    case MMS_FILE_ACCESS_TYPE_READ_DIRECTORY:
+        return "MMS_FILE_ACCESS_TYPE_READ_DIRECTORY";
+    case MMS_FILE_ACCESS_TYPE_OPEN:
+        return "MMS_FILE_ACCESS_TYPE_OPEN";
+    case MMS_FILE_ACCESS_TYPE_OBTAIN:
+        return "MMS_FILE_ACCESS_TYPE_OBTAIN";
+    case MMS_FILE_ACCESS_TYPE_DELETE:
+        return "MMS_FILE_ACCESS_TYPE_DELETE";
+    case MMS_FILE_ACCESS_TYPE_RENAME:
+        return "MMS_FILE_ACCESS_TYPE_RENAME";
+    default:
+        return "Unknown type";
+    }
+}
+#endif
 
 /**
  * \brief MmsFileAccessHandler callback function. Use to monitor and control file access

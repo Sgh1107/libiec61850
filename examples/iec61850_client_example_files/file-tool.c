@@ -13,7 +13,7 @@
  *   ./file-tool -h 192.168.1.100 dir              # 列出根目录
  *   ./file-tool -h 192.168.1.100 subdir configs   # 列出子目录
  *   ./file-tool -h 192.168.1.100 get fault.bin    # 下载文件
- *   ./file-tool -h 192.168.1.100 set config.cfg   # 上传文件
+ *   ./file-tool -h 192.168.1.100 set config.cfg   # 上传文件  file-tool.exe -h 192.168.31.57 set .\testicd.icd
  *   ./file-tool -h 192.168.1.100 del old.log      # 删除文件
  */
 

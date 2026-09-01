@@ -10,3 +10,5 @@ third_party/sqlite
 CHANGELOG
 mingw-w64-x86_64.cmake
 *.sh
+
+MMSFileUI/__pycache__

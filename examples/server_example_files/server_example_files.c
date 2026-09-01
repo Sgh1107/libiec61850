@@ -81,8 +81,8 @@ fileAccessHandler(void* parameter, MmsServerConnection connection, MmsFileServic
                                           const char* localFilename, const char* otherFilename)
 {
     /* 打印文件访问日志，便于调试和审计 */
-    printf("fileAccessHandler: service = %i, local-file: %s other-file: %s\n", 
-           service, localFilename, otherFilename);
+    printf("fileAccessHandler: service = %s, local-file: %s other-file: %s\n", 
+           ser2str(service), localFilename, otherFilename);
 
     /*
      * MMS_FILE_ACCESS_TYPE_RENAME = 重命名操作
@@ -130,11 +130,10 @@ main(int argc, char** argv)
      */
     iedServer = IedServer_create(&iedModel);
 
-    /* 
+    /* @todo 修改这里改变文件操作的basedir
      * ========== 关键配置：设置文件存储根目录 ==========
      * 所有客户端的文件访问都将基于此路径进行
-     * 例如：客户端请求读取 "config.cfg"，实际访问的是 "./vmd-filestore/config.cfg"
-     * 
+     * 例如：客户端请求读取 "config.cfg"，实际访问的是 "./vmd-filestore/config.cfg
      * 重要：运行此程序前，需要手动创建该目录！
      */
     IedServer_setFilestoreBasepath(iedServer, "./vmd-filestore/");
