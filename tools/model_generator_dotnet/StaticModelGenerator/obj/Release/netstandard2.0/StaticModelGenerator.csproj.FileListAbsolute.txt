@@ -1,0 +1,13 @@
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\bin\Release\netstandard2.0\StaticModelGenerator.deps.json
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\bin\Release\netstandard2.0\StaticModelGenerator.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\bin\Release\netstandard2.0\StaticModelGenerator.pdb
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\bin\Release\netstandard2.0\SCLParser.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\bin\Release\netstandard2.0\SCLParser.pdb
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.csproj.AssemblyReference.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.AssemblyInfoInputs.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.AssemblyInfo.cs
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.csproj.CoreCompileInputs.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticMo.E3323BA2.Up2Date
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\StaticModelGenerator\obj\Release\netstandard2.0\StaticModelGenerator.pdb

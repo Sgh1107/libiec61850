@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AF771AA2-C3EB-4F0A-884A-6B79C9977BE2}|SCLParser\\SCLParser.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\sclparser\\src\\sclelements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF771AA2-C3EB-4F0A-884A-6B79C9977BE2}|SCLParser\\SCLParser.csproj|solutionrelative:sclparser\\src\\sclelements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF771AA2-C3EB-4F0A-884A-6B79C9977BE2}|SCLParser\\SCLParser.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\sclparser\\src\\sclsmvcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF771AA2-C3EB-4F0A-884A-6B79C9977BE2}|SCLParser\\SCLParser.csproj|solutionrelative:sclparser\\src\\sclsmvcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3269555F-ECB9-4304-936A-8FC6153AB5BD}|DynamicModelGenerator\\DynamicModelGenerator.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\dynamicmodelgenerator\\dynamicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3269555F-ECB9-4304-936A-8FC6153AB5BD}|DynamicModelGenerator\\DynamicModelGenerator.csproj|solutionrelative:dynamicmodelgenerator\\dynamicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{992389DE-80E6-422B-8536-6D39E864118B}|StaticModelGenerator\\StaticModelGenerator.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\staticmodelgenerator\\src\\c_structures.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{992389DE-80E6-422B-8536-6D39E864118B}|StaticModelGenerator\\StaticModelGenerator.csproj|solutionrelative:staticmodelgenerator\\src\\c_structures.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8103E20D-0EE9-443B-B7B4-6641D4EF85C7}|Tools\\Tools.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\tools\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8103E20D-0EE9-443B-B7B4-6641D4EF85C7}|Tools\\Tools.csproj|solutionrelative:tools\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8103E20D-0EE9-443B-B7B4-6641D4EF85C7}|Tools\\Tools.csproj|c:\\users\\sungh\\desktop\\iedex\\libiec61850-1.6\\tools\\model_generator_dotnet\\tools\\tools.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8103E20D-0EE9-443B-B7B4-6641D4EF85C7}|Tools\\Tools.csproj|solutionrelative:tools\\tools.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SclElements.cs",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\SCLParser\\src\\SclElements.cs",
+              "RelativeDocumentMoniker": "SCLParser\\src\\SclElements.cs",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\SCLParser\\src\\SclElements.cs",
+              "RelativeToolTip": "SCLParser\\src\\SclElements.cs",
+              "ViewState": "AgIAADsCAAAAAAAAAAAAwEkCAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-25T08:02:12.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SclSMVControl.cs",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\SCLParser\\src\\SclSMVControl.cs",
+              "RelativeDocumentMoniker": "SCLParser\\src\\SclSMVControl.cs",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\SCLParser\\src\\SclSMVControl.cs",
+              "RelativeToolTip": "SCLParser\\src\\SclSMVControl.cs",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAYwKgAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-25T07:59:33.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DynamicModel.cs",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\DynamicModelGenerator\\DynamicModel.cs",
+              "RelativeDocumentMoniker": "DynamicModelGenerator\\DynamicModel.cs",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\DynamicModelGenerator\\DynamicModel.cs",
+              "RelativeToolTip": "DynamicModelGenerator\\DynamicModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-25T07:56:27.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "C_Structures.cs",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\StaticModelGenerator\\src\\C_Structures.cs",
+              "RelativeDocumentMoniker": "StaticModelGenerator\\src\\C_Structures.cs",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\StaticModelGenerator\\src\\C_Structures.cs",
+              "RelativeToolTip": "StaticModelGenerator\\src\\C_Structures.cs",
+              "ViewState": "AgIAAJcBAAAAAAAAAADwv/0BAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-25T07:54:53.677Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Tools",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Tools.csproj",
+              "RelativeDocumentMoniker": "Tools\\Tools.csproj",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Tools.csproj",
+              "RelativeToolTip": "Tools\\Tools.csproj",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAA4AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-08-25T02:20:56.339Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Program.cs",
+              "RelativeDocumentMoniker": "Tools\\Program.cs",
+              "ToolTip": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Program.cs",
+              "RelativeToolTip": "Tools\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-25T01:48:26.261Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

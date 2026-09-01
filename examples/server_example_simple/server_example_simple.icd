@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--SCL Schema Version 3.1 (2012/10/22)-->
+<SCL version="2007" revision="B" xmlns="http://www.iec.ch/61850/2003/SCL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.iec.ch/61850/2003/SCL SCL.xsd">
+	<Header id="" version="" revision="" toolID="Redisant SCL Parser Engine" nameStructure="IEDName" />
+	<Communication>
+		<SubNetwork name="NONE" type="8-MMS">
+			<ConnectedAP iedName="SampleIE" apName="P1">
+				<Address>
+					<P type="IP" xsi:type="tP_IP">127.0.0.1</P>
+					<P type="OSI-TSEL" xsi:type="tP_OSI-TSEL">0001</P>
+					<P type="OSI-SSEL" xsi:type="tP_OSI-SSEL">0001</P>
+					<P type="OSI-PSEL" xsi:type="tP_OSI-PSEL">00000001</P>
+					<P type="OSI-AP-Title">1,1,1,999,1</P>
+					<P type="OSI-AP-Invoke" xsi:type="tP_OSI-AP-Invoke">0</P>
+					<P type="OSI-AE-Qualifier" xsi:type="tP_OSI-AE-Qualifier">12</P>
+					<P type="OSI-AE-Invoke" xsi:type="tP_OSI-AE-Invoke">0</P>
+					<P type="MMS-Port" xsi:type="tP_MMS-Port">102</P>
+				</Address>
+			</ConnectedAP>
+		</SubNetwork>
+	</Communication>
+	<IED name="SampleIE">
+		<Services>
+			<DynAssociation />
+			<GetDirectory />
+			<GetDataObjectDefinition />
+			<DataObjectDirectory />
+			<GetDataSetValue />
+			<SetDataSetValue />
+			<DataSetDirectory />
+			<ConfDataSet max="1" modify="false" />
+			<DynDataSet max="42" />
+			<ReadWrite />
+			<ConfReportControl max="1" bufConf="false" />
+			<GetCBValues />
+			<ReportSettings rptID="Dyn" optFields="Dyn" bufTime="Dyn" trgOps="Dyn" intgPd="Dyn" resvTms="true" />
+			<ConfLNs fixPrefix="true" fixLnInst="true" />
+			<GOOSE max="0" />
+			<GSSE max="0" />
+			<FileHandling />
+		</Services>
+		<AccessPoint name="P1">
+			<Server>
+				<Authentication none="true" />
+				<LDevice inst="DDevice1">
+					<LN0 lnType="SampleIEDDevice1.LLN0" lnClass="LLN0" inst="">
+						<DataSet name="dataset1">
+							<FCDA ldInst="DDevice1" prefix="" lnClass="LLN0" doName="Mod" daName="q" fc="ST" />
+							<FCDA ldInst="DDevice1" prefix="" lnClass="MMXU" lnInst="1" doName="Mod" daName="q" fc="ST" />
+							<FCDA ldInst="DDevice1" prefix="" lnClass="MMXU" lnInst="1" doName="Mod" daName="ctlModel" fc="CF" />
+						</DataSet>
+						<ReportControl name="LLN0_Events_BuffRep" rptID="LLN0$RP$brcbEV1" buffered="true" bufTime="50" datSet="dataset1" intgPd="900000" confRev="1">
+							<TrgOps dchg="true" qchg="false" dupd="false" period="true" gi="true" />
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" dataRef="false" entryID="true" configRef="true" />
+							<RptEnabled max="1" />
+						</ReportControl>
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>status-only</Val>
+							</DAI>
+						</DOI>
+						<DOI name="NamPlt">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+							<DAI name="swRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="d">
+								<Val></Val>
+							</DAI>
+							<DAI name="configRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="ldNs">
+								<Val></Val>
+							</DAI>
+						</DOI>
+					</LN0>
+					<LN lnType="SampleIEDDevice1.DGEN1" lnClass="DGEN" inst="1">
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>status-only</Val>
+							</DAI>
+						</DOI>
+						<DOI name="NamPlt">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+							<DAI name="swRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="d">
+								<Val></Val>
+							</DAI>
+						</DOI>
+					</LN>
+					<LN lnType="SampleIEDDevice1.DSCH1" lnClass="DSCH" inst="1">
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>status-only</Val>
+							</DAI>
+						</DOI>
+						<DOI name="NamPlt">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+							<DAI name="swRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="d">
+								<Val></Val>
+							</DAI>
+						</DOI>
+						<DOI name="SchdAbsTm">
+							<DAI name="val" ix="0">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="1">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="2">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="3">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="4">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="5">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="6">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="7">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="8">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="9">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="10">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="11">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="12">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="13">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="14">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="15">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="16">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="17">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="18">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="19">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="20">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="21">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="22">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="23">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="24">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="25">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="26">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="27">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="28">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="29">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="30">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="31">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="32">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="33">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="34">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="35">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="36">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="37">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="38">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="39">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="40">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="41">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="42">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="43">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="44">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="45">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="46">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="47">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="48">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="49">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="50">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="51">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="52">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="53">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="54">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="55">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="56">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="57">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="58">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="59">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="60">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="61">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="62">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="63">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="64">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="65">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="66">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="67">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="68">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="69">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="70">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="71">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="72">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="73">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="74">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="75">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="76">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="77">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="78">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="79">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="80">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="81">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="82">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="83">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="84">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="85">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="86">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="87">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="88">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="89">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="90">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="91">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="92">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="93">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="94">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="95">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="96">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="97">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="98">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="99">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="100">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="101">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="102">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="103">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="104">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="105">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="106">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="107">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="108">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="109">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="110">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="111">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="112">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="113">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="114">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="115">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="116">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="117">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="118">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="119">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="120">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="121">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="122">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="123">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="124">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="125">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="126">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="127">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="128">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="129">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="130">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="131">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="132">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="133">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="134">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="135">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="136">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="137">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="138">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="139">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="140">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="141">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="142">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="143">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="144">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="145">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="146">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="147">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="148">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="149">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="150">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="151">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="152">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="153">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="154">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="155">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="156">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="157">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="158">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="159">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="160">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="161">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="162">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="163">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="164">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="165">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="166">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="167">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="168">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="169">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="170">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="171">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="172">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="173">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="174">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="175">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="176">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="177">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="178">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="179">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="180">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="181">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="182">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="183">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="184">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="185">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="186">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="187">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="188">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="189">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="190">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="191">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="192">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="193">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="194">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="195">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="196">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="197">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="198">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="199">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="200">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="201">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="202">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="203">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="204">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="205">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="206">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="207">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="208">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="209">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="210">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="211">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="212">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="213">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="214">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="215">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="216">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="217">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="218">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="219">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="220">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="221">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="222">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="223">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="224">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="225">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="226">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="227">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="228">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="229">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="230">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="231">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="232">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="233">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="234">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="235">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="236">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="237">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="238">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="239">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="240">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="241">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="242">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="243">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="244">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="245">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="246">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="247">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="248">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="249">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="250">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="251">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="252">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="253">
+								<Val>0.0</Val>
+							</DAI>
+							<DAI name="val" ix="254">
+								<Val>0.0</Val>
+							</DAI>
+						</DOI>
+					</LN>
+					<LN lnType="SampleIEDDevice1.LPHD1" lnClass="LPHD" inst="1">
+						<DOI name="PhyNam">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+						</DOI>
+					</LN>
+					<LN lnType="SampleIEDDevice1.MMXU1" lnClass="MMXU" inst="1">
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>status-only</Val>
+							</DAI>
+						</DOI>
+						<DOI name="NamPlt">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+							<DAI name="swRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="d">
+								<Val></Val>
+							</DAI>
+						</DOI>
+					</LN>
+					<LN lnType="SampleIEDDevice1.MMXU2" lnClass="MMXU" inst="2">
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>status-only</Val>
+							</DAI>
+						</DOI>
+						<DOI name="NamPlt">
+							<DAI name="vendor">
+								<Val></Val>
+							</DAI>
+							<DAI name="swRev">
+								<Val></Val>
+							</DAI>
+							<DAI name="d">
+								<Val></Val>
+							</DAI>
+						</DOI>
+					</LN>
+				</LDevice>
+			</Server>
+		</AccessPoint>
+	</IED>
+	<DataTypeTemplates>
+		<LNodeType id="SampleIEDDevice1.LLN0" lnClass="LLN0">
+			<DO name="Mod" type="SampleIEDDevice1.LLN0.Mod" />
+			<DO name="Beh" type="SampleIEDDevice1.LLN0.Beh" />
+			<DO name="Health" type="SampleIEDDevice1.LLN0.Health" />
+			<DO name="NamPlt" type="SampleIEDDevice1.LLN0.NamPlt" />
+		</LNodeType>
+		<LNodeType id="SampleIEDDevice1.LPHD1" lnClass="LPHD">
+			<DO name="PhyHealth" type="SampleIEDDevice1.LLN0.Health" />
+			<DO name="Proxy" type="SampleIEDDevice1.LPHD1.Proxy" />
+			<DO name="PhyNam" type="SampleIEDDevice1.LPHD1.PhyNam" />
+		</LNodeType>
+		<LNodeType id="SampleIEDDevice1.MMXU1" lnClass="MMXU">
+			<DO name="Mod" type="SampleIEDDevice1.LLN0.Mod" />
+			<DO name="Beh" type="SampleIEDDevice1.LLN0.Beh" />
+			<DO name="Health" type="SampleIEDDevice1.LLN0.Health" />
+			<DO name="NamPlt" type="SampleIEDDevice1.DGEN1.NamPlt" />
+		</LNodeType>
+		<LNodeType id="SampleIEDDevice1.MMXU2" lnClass="MMXU">
+			<DO name="TotW" type="SampleIEDDevice1.DGEN1.TotWh" />
+			<DO name="Mod" type="SampleIEDDevice1.LLN0.Mod" />
+			<DO name="Beh" type="SampleIEDDevice1.LLN0.Beh" />
+			<DO name="Health" type="SampleIEDDevice1.LLN0.Health" />
+			<DO name="NamPlt" type="SampleIEDDevice1.DGEN1.NamPlt" />
+		</LNodeType>
+		<LNodeType id="SampleIEDDevice1.DGEN1" lnClass="DGEN">
+			<DO name="TotWh" type="SampleIEDDevice1.DGEN1.TotWh" />
+			<DO name="Mod" type="SampleIEDDevice1.DGEN1.Mod" />
+			<DO name="Beh" type="SampleIEDDevice1.DGEN1.Beh" />
+			<DO name="Health" type="SampleIEDDevice1.DGEN1.Health" />
+			<DO name="OpTmh" type="SampleIEDDevice1.DGEN1.OpTmh" />
+			<DO name="GnOpSt" type="SampleIEDDevice1.DGEN1.GnOpSt" />
+			<DO name="OpTmsRs" type="SampleIEDDevice1.DGEN1.OpTmh" />
+			<DO name="NamPlt" type="SampleIEDDevice1.DGEN1.NamPlt" />
+		</LNodeType>
+		<LNodeType id="SampleIEDDevice1.DSCH1" lnClass="DSCH">
+			<DO name="Mod" type="SampleIEDDevice1.DGEN1.Mod" />
+			<DO name="Beh" type="SampleIEDDevice1.DGEN1.Beh" />
+			<DO name="Health" type="SampleIEDDevice1.DGEN1.Health" />
+			<DO name="SchdSt" type="SampleIEDDevice1.DGEN1.OpTmh" />
+			<DO name="NamPlt" type="SampleIEDDevice1.DGEN1.NamPlt" />
+			<DO name="SchdAbsTm" type="SampleIEDDevice1.DSCH1.SchdAbsTm" />
+		</LNodeType>
+		<DOType id="SampleIEDDevice1.LPHD1.PhyNam" cdc="DPL">
+			<DA name="vendor" fc="DC" bType="VisString255" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.LLN0.Mod" cdc="INC">
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+			<DA name="ctlModel" fc="CF" bType="Enum" type="ctlModel" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.LLN0.Beh" cdc="INS">
+			<DA name="stVal" fc="ST" bType="Enum" type="Beh" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.LLN0.Health" cdc="INS">
+			<DA name="stVal" fc="ST" bType="Enum" type="Health" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.OpTmh" cdc="INS">
+			<DA name="stVal" fc="ST" bType="INT32" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.LLN0.NamPlt" cdc="LPL">
+			<DA name="vendor" fc="DC" bType="VisString255" />
+			<DA name="swRev" fc="DC" bType="VisString255" />
+			<DA name="d" fc="DC" bType="VisString255" />
+			<DA name="configRev" fc="DC" bType="VisString255" />
+			<DA name="ldNs" fc="EX" bType="VisString255" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.NamPlt" cdc="LPL">
+			<DA name="vendor" fc="DC" bType="VisString255" />
+			<DA name="swRev" fc="DC" bType="VisString255" />
+			<DA name="d" fc="DC" bType="VisString255" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.TotWh" cdc="MV">
+			<DA name="mag" fc="MX" bType="Struct" type="SampleIEDDevice1.DGEN1.TotWh.mag" />
+			<DA name="q" fc="MX" bType="Quality" />
+			<DA name="t" fc="MX" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.LPHD1.Proxy" cdc="SPS">
+			<DA name="stVal" fc="ST" bType="BOOLEAN" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.Mod" cdc="ENC">
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+			<DA name="ctlModel" fc="CF" bType="Enum" type="CtlModelKind" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.Beh" cdc="ENS">
+			<DA name="stVal" fc="ST" bType="Enum" type="Beh" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.Health" cdc="ENS">
+			<DA name="stVal" fc="ST" bType="Enum" type="Health" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DGEN1.GnOpSt" cdc="ENS">
+			<DA name="stVal" fc="ST" bType="Enum" type="GnOpSt" />
+			<DA name="q" fc="ST" bType="Quality" />
+			<DA name="t" fc="ST" bType="Timestamp" />
+		</DOType>
+		<DOType id="SampleIEDDevice1.DSCH1.SchdAbsTm" cdc="SCA">
+			<DA name="val" fc="SP" bType="FLOAT32" count="255" />
+			<DA name="time" fc="SP" bType="Timestamp" count="255" />
+		</DOType>
+		<DAType id="SampleIEDDevice1.DGEN1.TotWh.mag">
+			<BDA name="f" bType="FLOAT32" />
+		</DAType>
+		<EnumType id="ctlModel">
+			<!--Source: IEC 61850-7-3:2003A-->
+			<EnumVal ord="0">status-only</EnumVal>
+			<EnumVal ord="1">direct-with-normal-security</EnumVal>
+			<EnumVal ord="2">sbo-with-normal-security</EnumVal>
+			<EnumVal ord="3">direct-with-enhanced-security</EnumVal>
+			<EnumVal ord="4">sbo-with-enhanced-security</EnumVal>
+		</EnumType>
+		<EnumType id="CtlModelKind">
+			<!--Source: IEC 61850-7-3:2007A-->
+			<EnumVal ord="0">status-only</EnumVal>
+			<EnumVal ord="1">direct-with-normal-security</EnumVal>
+			<EnumVal ord="2">sbo-with-normal-security</EnumVal>
+			<EnumVal ord="3">direct-with-enhanced-security</EnumVal>
+			<EnumVal ord="4">sbo-with-enhanced-security</EnumVal>
+		</EnumType>
+		<EnumType id="Beh">
+			<!--Source: IEC 61850-7-4:2003A-->
+			<EnumVal ord="1">on</EnumVal>
+			<EnumVal ord="2">blocked</EnumVal>
+			<EnumVal ord="3">test</EnumVal>
+			<EnumVal ord="4">test/blocked</EnumVal>
+			<EnumVal ord="5">off</EnumVal>
+		</EnumType>
+		<EnumType id="Health">
+			<!--Source: IEC 61850-7-4:2003A-->
+			<EnumVal ord="1">Ok</EnumVal>
+			<EnumVal ord="2">Warning</EnumVal>
+			<EnumVal ord="3">Alarm</EnumVal>
+		</EnumType>
+		<EnumType id="GnOpSt">
+			<!--Source: IEC 61850-7-420:2009A-->
+			<EnumVal ord="0">Not applicable / Unknown</EnumVal>
+			<EnumVal ord="1">Not operating</EnumVal>
+			<EnumVal ord="2">Operating</EnumVal>
+			<EnumVal ord="3">Starting up</EnumVal>
+			<EnumVal ord="4">Shutting down</EnumVal>
+			<EnumVal ord="5">At disconnect level</EnumVal>
+			<EnumVal ord="6">Ramping (power)</EnumVal>
+			<EnumVal ord="7">Ramping (reactive power)</EnumVal>
+			<EnumVal ord="99">Other</EnumVal>
+		</EnumType>
+	</DataTypeTemplates>
+</SCL>

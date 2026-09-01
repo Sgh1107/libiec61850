@@ -1,0 +1,72 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Tools/1.0.0": {
+        "dependencies": {
+          "DynamicModelGenerator": "1.0.0",
+          "StaticModelGenerator": "1.0.0"
+        },
+        "runtime": {
+          "Tools.dll": {}
+        }
+      },
+      "DynamicModelGenerator/1.0.0": {
+        "dependencies": {
+          "SCLParser": "1.0.0"
+        },
+        "runtime": {
+          "DynamicModelGenerator.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SCLParser/1.0.0": {
+        "runtime": {
+          "SCLParser.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "StaticModelGenerator/1.0.0": {
+        "dependencies": {
+          "SCLParser": "1.0.0"
+        },
+        "runtime": {
+          "StaticModelGenerator.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Tools/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DynamicModelGenerator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SCLParser/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "StaticModelGenerator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

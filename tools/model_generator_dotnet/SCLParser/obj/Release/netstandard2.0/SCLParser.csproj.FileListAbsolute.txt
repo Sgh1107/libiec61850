@@ -1,0 +1,10 @@
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\bin\Release\netstandard2.0\SCLParser.deps.json
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\bin\Release\netstandard2.0\SCLParser.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\bin\Release\netstandard2.0\SCLParser.pdb
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.csproj.AssemblyReference.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.AssemblyInfoInputs.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.AssemblyInfo.cs
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.csproj.CoreCompileInputs.cache
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.pdb

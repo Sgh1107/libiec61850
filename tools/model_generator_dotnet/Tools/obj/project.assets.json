@@ -1,0 +1,137 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "DynamicModelGenerator/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "SCLParser": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DynamicModelGenerator.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DynamicModelGenerator.dll": {}
+        }
+      },
+      "SCLParser/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/SCLParser.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SCLParser.dll": {}
+        }
+      },
+      "StaticModelGenerator/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "SCLParser": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/StaticModelGenerator.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/StaticModelGenerator.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DynamicModelGenerator/1.0.0": {
+      "type": "project",
+      "path": "../DynamicModelGenerator/DynamicModelGenerator.csproj",
+      "msbuildProject": "../DynamicModelGenerator/DynamicModelGenerator.csproj"
+    },
+    "SCLParser/1.0.0": {
+      "type": "project",
+      "path": "../SCLParser/SCLParser.csproj",
+      "msbuildProject": "../SCLParser/SCLParser.csproj"
+    },
+    "StaticModelGenerator/1.0.0": {
+      "type": "project",
+      "path": "../StaticModelGenerator/StaticModelGenerator.csproj",
+      "msbuildProject": "../StaticModelGenerator/StaticModelGenerator.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "DynamicModelGenerator >= 1.0.0",
+      "StaticModelGenerator >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\sungh\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Tools.csproj",
+      "projectName": "Tools",
+      "projectPath": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\Tools.csproj",
+      "packagesPath": "C:\\Users\\sungh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\Tools\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\sungh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\DynamicModelGenerator\\DynamicModelGenerator.csproj": {
+              "projectPath": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\DynamicModelGenerator\\DynamicModelGenerator.csproj"
+            },
+            "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\StaticModelGenerator\\StaticModelGenerator.csproj": {
+              "projectPath": "C:\\Users\\sungh\\Desktop\\IEDEX\\libiec61850-1.6\\tools\\model_generator_dotnet\\StaticModelGenerator\\StaticModelGenerator.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
