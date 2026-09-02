@@ -35,8 +35,7 @@ static char _dirname[1000];    /* 存储目录名的缓冲区 */
  * 获取路径的目录部分（Windows 版本）
  * 例如：输入 "C:/data/file.txt" 返回 "C:/data"
  */
-static char*
-dirname(char* path)
+static char* dirname(char* path)
 {
     char* lastSep = NULL;
     int len = strlen(path);
@@ -67,8 +66,7 @@ static char _basename[1000];   /* 存储文件名的缓冲区 */
  * 获取路径的文件名部分（Windows 版本）
  * 例如：输入 "C:/data/file.txt" 返回 "file.txt"
  */
-static char*
-basename(char* path)
+static char* basename(char* path)
 {
     char* lastSep = NULL;
     int len = strlen(path);
@@ -131,9 +129,7 @@ static bool
 downloadHandler(void* parameter, uint8_t* buffer, uint32_t bytesRead)
 {
     FILE* fp = (FILE*)parameter;  /* 将参数转换为文件指针 */
-
     printf("received %i bytes\n", bytesRead);
-
     if (bytesRead > 0)
     {
         /* 将接收到的数据追加写入本地文件 */
@@ -150,8 +146,7 @@ downloadHandler(void* parameter, uint8_t* buffer, uint32_t bytesRead)
 /**
  * 打印程序使用说明（帮助信息）
  */
-static void
-printHelp()
+static void printHelp()
 {
     printf("file-tool [options] <operation> [<parameters>]\n");
     printf("  Options:\n");
@@ -169,13 +164,11 @@ printHelp()
 
 /**
  * 解析命令行参数
- * 
  * @param argc  参数个数
  * @param argv  参数数组
  * @return 0成功，非0失败
  */
-static int
-parseOptions(int argc, char** argv)
+static int parseOptions(int argc, char** argv)
 {
     int currentArgc = 1;
     int retVal = 0;
@@ -246,11 +239,9 @@ parseOptions(int argc, char** argv)
 
 /**
  * 显示服务器目录内容
- * 
  * @param con 已建立的 IEC 61850 连接对象
  */
-void
-showDirectory(IedConnection con)
+void showDirectory(IedConnection con)
 {
     IedClientError error;
     bool moreFollows = false;  /* 标记是否有更多文件（分页用） */
@@ -271,18 +262,14 @@ showDirectory(IedConnection con)
     {
         /* 遍历目录条目链表 */
         LinkedList directoryEntry = LinkedList_getNext(rootDirectory);
-
         while (directoryEntry != NULL)
         {
             FileDirectoryEntry entry = (FileDirectoryEntry)directoryEntry->data;
-
             /* 打印文件名和文件大小 */
             printf("%s %i\n", FileDirectoryEntry_getFileName(entry), 
                              FileDirectoryEntry_getFileSize(entry));
-
             directoryEntry = LinkedList_getNext(directoryEntry);
         }
-
         /* 释放链表占用的内存 */
         LinkedList_destroyDeep(rootDirectory, (LinkedListValueDeleteFunction)FileDirectoryEntry_destroy);
     }
@@ -294,11 +281,9 @@ showDirectory(IedConnection con)
 
 /**
  * 从服务器下载文件
- * 
  * @param con 已建立的 IEC 61850 连接对象
  */
-void
-getFile(IedConnection con)
+void getFile(IedConnection con)
 {
     IedClientError error;
 
@@ -326,11 +311,9 @@ getFile(IedConnection con)
 
 /**
  * 上传文件到服务器
- * 
  * @param con 已建立的 IEC 61850 连接对象
  */
-void
-setFile(IedConnection con)
+void setFile(IedConnection con)
 {
     IedClientError error;
 
@@ -368,25 +351,17 @@ setFile(IedConnection con)
 
 /**
  * 删除服务器上的文件
- * 
  * @param con 已建立的 IEC 61850 连接对象
  */
-void
-deleteFile(IedConnection con)
+void deleteFile(IedConnection con)
 {
     IedClientError error;
-
     IedConnection_deleteFile(con, &error, filename);
-
     if (error != IED_ERROR_OK)
         printf("Failed to delete file! (code=%i)\n", error);
 }
 
-/**
- * 程序入口函数
- */
-int
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     /* 参数不足时显示帮助信息 */
     if (argc < 2)
@@ -438,7 +413,8 @@ main(int argc, char** argv)
             break;
         }
 
-        /* 断开连接 */
+        /// @todo 这里加上abort在进行一次文件操作后客户端会主动断开连接,想保持连接状态注释掉这一行
+        /// @note 但是官方的文档中表示操作一次后主动断开连接是正确的设计模式
         IedConnection_abort(con, &error);
     }
     else

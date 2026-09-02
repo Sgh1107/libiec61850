@@ -2120,6 +2120,26 @@ IedServer_ignoreReadAccess(IedServer self, bool ignore);
 
 /**@}*/
 
+static inline const char* ser2str(const MmsFileServiceType service)
+{
+    switch (service)
+    {
+    case MMS_FILE_ACCESS_TYPE_READ_DIRECTORY:
+        return "MMS_FILE_ACCESS_TYPE_READ_DIRECTORY";
+    case MMS_FILE_ACCESS_TYPE_OPEN:
+        return "MMS_FILE_ACCESS_TYPE_OPEN";
+    case MMS_FILE_ACCESS_TYPE_OBTAIN:
+        return "MMS_FILE_ACCESS_TYPE_OBTAIN";
+    case MMS_FILE_ACCESS_TYPE_DELETE:
+        return "MMS_FILE_ACCESS_TYPE_DELETE";
+    case MMS_FILE_ACCESS_TYPE_RENAME:
+        return "MMS_FILE_ACCESS_TYPE_RENAME";
+    default:
+        return "Unknown type";
+    }
+}
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -24,10 +24,6 @@
 #ifndef MMS_SERVER_H_
 #define MMS_SERVER_H_
 
-/** \addtogroup mms_server_api_group
- *  @{
- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -178,8 +174,8 @@ typedef  enum {
     MMS_FILE_ACCESS_TYPE_RENAME
 } MmsFileServiceType;
 
-#if 1   // add enum -> string
-char* ser2str(const MmsFileServiceType service)
+#if 0   // sungh add enum -> string, move to oec61850_server.h
+inline const char* ser2str(const MmsFileServiceType service)
 {
     switch (service)
     {
