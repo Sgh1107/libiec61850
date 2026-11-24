@@ -64,21 +64,25 @@ extern DataAttribute iedModel_GenericIO_GGIO1_AnIn1_mag;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn1_mag_f;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn1_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn1_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_AnIn1_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_AnIn2;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn2_mag;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn2_mag_f;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn2_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn2_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_AnIn2_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_AnIn3;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn3_mag;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn3_mag_f;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn3_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn3_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_AnIn3_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_AnIn4;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn4_mag;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn4_mag_f;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn4_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_AnIn4_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_AnIn4_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_SPCSO1;
 extern DataAttribute iedModel_GenericIO_GGIO1_SPCSO1_Oper;
 extern DataAttribute iedModel_GenericIO_GGIO1_SPCSO1_Oper_ctlVal;
@@ -311,18 +315,22 @@ extern DataObject    iedModel_GenericIO_GGIO1_Ind1;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind1_stVal;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind1_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind1_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_Ind1_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_Ind2;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind2_stVal;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind2_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind2_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_Ind2_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_Ind3;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind3_stVal;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind3_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind3_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_Ind3_setVal;
 extern DataObject    iedModel_GenericIO_GGIO1_Ind4;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_stVal;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_q;
 extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_t;
+extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_setVal;
 
 
 
@@ -379,21 +387,25 @@ extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_t;
 #define IEDMODEL_GenericIO_GGIO1_AnIn1_mag_f (&iedModel_GenericIO_GGIO1_AnIn1_mag_f)
 #define IEDMODEL_GenericIO_GGIO1_AnIn1_q (&iedModel_GenericIO_GGIO1_AnIn1_q)
 #define IEDMODEL_GenericIO_GGIO1_AnIn1_t (&iedModel_GenericIO_GGIO1_AnIn1_t)
+#define IEDMODEL_GenericIO_GGIO1_AnIn1_setVal (&iedModel_GenericIO_GGIO1_AnIn1_setVal)
 #define IEDMODEL_GenericIO_GGIO1_AnIn2 (&iedModel_GenericIO_GGIO1_AnIn2)
 #define IEDMODEL_GenericIO_GGIO1_AnIn2_mag (&iedModel_GenericIO_GGIO1_AnIn2_mag)
 #define IEDMODEL_GenericIO_GGIO1_AnIn2_mag_f (&iedModel_GenericIO_GGIO1_AnIn2_mag_f)
 #define IEDMODEL_GenericIO_GGIO1_AnIn2_q (&iedModel_GenericIO_GGIO1_AnIn2_q)
 #define IEDMODEL_GenericIO_GGIO1_AnIn2_t (&iedModel_GenericIO_GGIO1_AnIn2_t)
+#define IEDMODEL_GenericIO_GGIO1_AnIn2_setVal (&iedModel_GenericIO_GGIO1_AnIn2_setVal)
 #define IEDMODEL_GenericIO_GGIO1_AnIn3 (&iedModel_GenericIO_GGIO1_AnIn3)
 #define IEDMODEL_GenericIO_GGIO1_AnIn3_mag (&iedModel_GenericIO_GGIO1_AnIn3_mag)
 #define IEDMODEL_GenericIO_GGIO1_AnIn3_mag_f (&iedModel_GenericIO_GGIO1_AnIn3_mag_f)
 #define IEDMODEL_GenericIO_GGIO1_AnIn3_q (&iedModel_GenericIO_GGIO1_AnIn3_q)
 #define IEDMODEL_GenericIO_GGIO1_AnIn3_t (&iedModel_GenericIO_GGIO1_AnIn3_t)
+#define IEDMODEL_GenericIO_GGIO1_AnIn3_setVal (&iedModel_GenericIO_GGIO1_AnIn3_setVal)
 #define IEDMODEL_GenericIO_GGIO1_AnIn4 (&iedModel_GenericIO_GGIO1_AnIn4)
 #define IEDMODEL_GenericIO_GGIO1_AnIn4_mag (&iedModel_GenericIO_GGIO1_AnIn4_mag)
 #define IEDMODEL_GenericIO_GGIO1_AnIn4_mag_f (&iedModel_GenericIO_GGIO1_AnIn4_mag_f)
 #define IEDMODEL_GenericIO_GGIO1_AnIn4_q (&iedModel_GenericIO_GGIO1_AnIn4_q)
 #define IEDMODEL_GenericIO_GGIO1_AnIn4_t (&iedModel_GenericIO_GGIO1_AnIn4_t)
+#define IEDMODEL_GenericIO_GGIO1_AnIn4_setVal (&iedModel_GenericIO_GGIO1_AnIn4_setVal)
 #define IEDMODEL_GenericIO_GGIO1_SPCSO1 (&iedModel_GenericIO_GGIO1_SPCSO1)
 #define IEDMODEL_GenericIO_GGIO1_SPCSO1_Oper (&iedModel_GenericIO_GGIO1_SPCSO1_Oper)
 #define IEDMODEL_GenericIO_GGIO1_SPCSO1_Oper_ctlVal (&iedModel_GenericIO_GGIO1_SPCSO1_Oper_ctlVal)
@@ -626,18 +638,22 @@ extern DataAttribute iedModel_GenericIO_GGIO1_Ind4_t;
 #define IEDMODEL_GenericIO_GGIO1_Ind1_stVal (&iedModel_GenericIO_GGIO1_Ind1_stVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind1_q (&iedModel_GenericIO_GGIO1_Ind1_q)
 #define IEDMODEL_GenericIO_GGIO1_Ind1_t (&iedModel_GenericIO_GGIO1_Ind1_t)
+#define IEDMODEL_GenericIO_GGIO1_Ind1_setVal (&iedModel_GenericIO_GGIO1_Ind1_setVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind2 (&iedModel_GenericIO_GGIO1_Ind2)
 #define IEDMODEL_GenericIO_GGIO1_Ind2_stVal (&iedModel_GenericIO_GGIO1_Ind2_stVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind2_q (&iedModel_GenericIO_GGIO1_Ind2_q)
 #define IEDMODEL_GenericIO_GGIO1_Ind2_t (&iedModel_GenericIO_GGIO1_Ind2_t)
+#define IEDMODEL_GenericIO_GGIO1_Ind2_setVal (&iedModel_GenericIO_GGIO1_Ind2_setVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind3 (&iedModel_GenericIO_GGIO1_Ind3)
 #define IEDMODEL_GenericIO_GGIO1_Ind3_stVal (&iedModel_GenericIO_GGIO1_Ind3_stVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind3_q (&iedModel_GenericIO_GGIO1_Ind3_q)
 #define IEDMODEL_GenericIO_GGIO1_Ind3_t (&iedModel_GenericIO_GGIO1_Ind3_t)
+#define IEDMODEL_GenericIO_GGIO1_Ind3_setVal (&iedModel_GenericIO_GGIO1_Ind3_setVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind4 (&iedModel_GenericIO_GGIO1_Ind4)
 #define IEDMODEL_GenericIO_GGIO1_Ind4_stVal (&iedModel_GenericIO_GGIO1_Ind4_stVal)
 #define IEDMODEL_GenericIO_GGIO1_Ind4_q (&iedModel_GenericIO_GGIO1_Ind4_q)
 #define IEDMODEL_GenericIO_GGIO1_Ind4_t (&iedModel_GenericIO_GGIO1_Ind4_t)
+#define IEDMODEL_GenericIO_GGIO1_Ind4_setVal (&iedModel_GenericIO_GGIO1_Ind4_setVal)
 
 #endif /* STATIC_MODEL_H_ */
 

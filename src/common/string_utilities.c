@@ -49,7 +49,6 @@ StringUtils_copyString(const char* str)
     int newStringLength = strlen(str) + 1;
 
     char* newString = (char*)GLOBAL_MALLOC(newStringLength);
-
     if (newString)
         memcpy(newString, str, newStringLength);
 

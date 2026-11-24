@@ -114,8 +114,7 @@ ReasonForInclusion_getValueAsString(ReasonForInclusion reasonCode)
     }
 }
 
-ClientReport
-ClientReport_create()
+ClientReport ClientReport_create()
 {
     ClientReport self = (ClientReport) GLOBAL_CALLOC(1, sizeof(struct sClientReport));
 
@@ -127,8 +126,7 @@ ClientReport_create()
     return self;
 }
 
-void
-ClientReport_destroy(ClientReport self)
+void ClientReport_destroy(ClientReport self)
 {
     if (self)
     {
@@ -156,20 +154,17 @@ ClientReport_destroy(ClientReport self)
     }
 }
 
-char*
-ClientReport_getRcbReference(ClientReport self)
+char* ClientReport_getRcbReference(ClientReport self)
 {
     return self->rcbReference;
 }
 
-char*
-ClientReport_getRptId(ClientReport self)
+char* ClientReport_getRptId(ClientReport self)
 {
     return self->rptId;
 }
 
-ReasonForInclusion
-ClientReport_getReasonForInclusion(ClientReport self, int elementIndex)
+ReasonForInclusion ClientReport_getReasonForInclusion(ClientReport self, int elementIndex)
 {
     if ((self->reasonForInclusion != NULL) && (elementIndex < self->dataSetSize) && (elementIndex >= 0))
         return self->reasonForInclusion[elementIndex];
@@ -270,14 +265,13 @@ ClientReport_getDataReference(ClientReport self, int elementIndex)
     return dataReference;
 }
 
-const char*
-ClientReport_getDataSetName(ClientReport self)
+const char* ClientReport_getDataSetName(ClientReport self)
 {
 	return self->dataSetName;
 }
 
-MmsValue*
-ClientReport_getDataSetValues(ClientReport self)
+// 获取ClientReport的数据集值列表（各数据项的实际值）
+MmsValue* ClientReport_getDataSetValues(ClientReport self)
 {
     return self->dataSetValues;
 }

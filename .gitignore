@@ -12,3 +12,6 @@ mingw-w64-x86_64.cmake
 *.sh
 
 MMSFileUI/__pycache__
+
+.workbuddy
+*.html

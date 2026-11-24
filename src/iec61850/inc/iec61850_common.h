@@ -108,22 +108,22 @@ typedef enum {
  * @{
  */
 
-/** Report will be triggered when data changes */
+/** 数据变化时触发报告 */
 #define TRG_OPT_DATA_CHANGED 1
 
-/** Report will be triggered when quality changes */
+/** 品质（质量）变化时触发报告 */
 #define TRG_OPT_QUALITY_CHANGED 2
 
-/** Report will be triggered when data is updated */
+/** 数据更新时触发报告 */
 #define TRG_OPT_DATA_UPDATE 4
 
-/** Report will be triggered periodically */
+/** 周期性触发报告 */
 #define TRG_OPT_INTEGRITY 8
 
-/** Report will be triggered by GI (general interrogation) request */
+/** 由 GI（总召唤 / 一般性 interrogation）请求触发报告 */
 #define TRG_OPT_GI 16
 
-/** Report will be triggered only on rising edge (transient variable */
+/** 仅在上升沿触发报告（瞬变变量 / transient variable） */
 #define TRG_OPT_TRANSIENT 128
 /** @} */
 
@@ -135,28 +135,28 @@ typedef enum {
  * @{
  */
 
-/** Report contains sequence number */
+/** 报告包含序列号 */
 #define RPT_OPT_SEQ_NUM 1
 
-/** Report contains a report timestamp */
+/** 报告包含报告时间戳 */
 #define RPT_OPT_TIME_STAMP 2
 
-/** Report contains reason for inclusion value for each included data set member */
+/** 报告中为每个被包含的数据集成员携带"包含原因"（Reason for Inclusion）值 */
 #define RPT_OPT_REASON_FOR_INCLUSION 4
 
-/** Report contains data set object reference */
+/** 报告包含数据集对象引用（DataSet 引用） */
 #define RPT_OPT_DATA_SET 8
 
-/** Report contains data reference for each included data set member */
+/** 报告中为每个被包含的数据集成员携带数据引用（DataRef） */
 #define RPT_OPT_DATA_REFERENCE 16
 
-/** Report contains buffer overflow flag */
+/** 报告包含缓冲区溢出标志 */
 #define RPT_OPT_BUFFER_OVERFLOW 32
 
-/** Report contains entry id */
+/** 报告包含条目 ID（EntryID） */
 #define RPT_OPT_ENTRY_ID 64
 
-/** Report contains configuration revision */
+/** 报告包含配置修订号（ConfRev） */
 #define RPT_OPT_CONF_REV 128
 /** @} */
 

@@ -220,24 +220,23 @@ struct sDataSet {
 };
 
 struct sReportControlBlock {
-    LogicalNode* parent;
-    char* name;
-    char* rptId;
-    bool buffered;
-    char* dataSetName; /* pre loaded with relative name in logical node */
+    LogicalNode* parent;        // 所属逻辑节点
+    char* name;                 // 名称
+    char* rptId;                // 报告ID (RptID)
+    bool buffered;              // 是否为缓冲型报告 (Buffered)
+    char* dataSetName;          // 数据集名称（预加载为逻辑节点内的相对名称）
 
-    uint32_t confRef; /* ConfRef - configuration revision */
-    uint8_t trgOps; /* TrgOps - trigger conditions */
-    uint8_t options; /* OptFlds */
-    uint32_t bufferTime; /* BufTm - time to buffer events until a report is generated */
-    uint32_t intPeriod; /* IntgPd - integrity period */
+    uint32_t confRef;           // ConfRef - 配置修订版本号
+    uint8_t trgOps;             // TrgOps - 触发条件
+    uint8_t options;            // OptFlds - 可选字段
+    uint32_t bufferTime;        // BufTm - 事件缓冲时间（在生成报告前缓冲事件的时长）
+    uint32_t intPeriod;         // IntgPd - 完整性周期
 
-    /* type (first byte) and address of the pre-configured client
-       type can be one of (0 - no reservation, 4 - IPv4 client, 6 - IPv6 client) */
+    /* 预配置客户端的类型（第一个字节）和地址类型可为：0 - 无预留, 4 - IPv4客户端, 6 - IPv6客户端 */
     uint8_t clientReservation[17];
 
-    ReportControlBlock* sibling; /* next control block in list or NULL if this is the last entry
-                                  * at runtime reuse as pointer to ReportControl instance!
+    ReportControlBlock* sibling; /* 链表中下一个控制块，若为最后一项则为 NULL
+                                  * 运行时复用为指向 ReportControl 实例的指针！
                                   **/
 };
 

@@ -1197,29 +1197,27 @@ exit_function:
     return invokeId;
 }
 
+// 把"客户端想改哪些RCB参数"这个意图翻译成一串有序的MMS写变量请求然后一次或逐条发给服务端
 void
 IedConnection_setRCBValues(IedConnection self, IedClientError* error, ClientReportControlBlock rcb,
                            uint32_t parametersMask, bool singleRequest)
 {
     *error = IED_ERROR_OK;
-
     MmsError mmsError = MMS_ERROR_NONE;
 
     bool isBuffered = ClientReportControlBlock_isBuffered(rcb);
     bool sendGILast = false; /* GI should be sent last when RptEna=TRUE is included */
 
     char domainId[65];
-    char itemId[130];
-
+    char itemId[130];     // 复写缓冲区重复使用 LLN0$RP$EventsRCB01 每次拼接写入后擦除然后基于此再写
     char* rcbReference = ClientReportControlBlock_getObjectReference(rcb);
 
+    ////// 解析 RCB 引用 //////
     MmsMapping_getMmsDomainFromObjectReference(rcbReference, domainId);
-
     StringUtils_copyStringMax(itemId, 130, rcbReference + strlen(domainId) + 1);
     StringUtils_replace(itemId, '.', '$');
 
     int itemIdLen = strlen(itemId);
-
     if (DEBUG_IED_CLIENT)
         printf("DEBUG_IED_CLIENT: setRCBValues for %s\n", rcbReference);
 
@@ -1232,154 +1230,130 @@ IedConnection_setRCBValues(IedConnection self, IedClientError* error, ClientRepo
     {
         if (parametersMask & RCB_ELEMENT_RPT_ENA)
         {
+            // 追加 $RptEna
             StringUtils_appendString(itemId, 130, "$RptEna");
-
+            // StringUtils_copyString 深拷贝这样可以下次复写
             LinkedList_add(itemIds, StringUtils_copyString(itemId));
             LinkedList_add(values, rcb->rptEna);
-
+            // "LLN0$RP$EventsRCB01$RptEna" -> itemId[18]=0 → 擦掉RptEna复位成基础路径
             itemId[itemIdLen] = 0;
         }
     }
 
     /* add resv/resvTms as first element and rptEna as last element when enabling a report */
-    if (parametersMask & RCB_ELEMENT_RESV)
+    if (parametersMask & RCB_ELEMENT_RESV)          // 仅非缓存 URCB
     {
         if (isBuffered)
             goto error_invalid_parameter;
 
         StringUtils_appendString(itemId, 130, "$Resv");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->resv);
-
         itemId[itemIdLen] = 0;
     }
 
-    if (parametersMask & RCB_ELEMENT_RESV_TMS)
+    if (parametersMask & RCB_ELEMENT_RESV_TMS)      // 仅缓存 BRCB
     {
         if (!isBuffered)
             goto error_invalid_parameter;
 
         StringUtils_appendString(itemId, 130, "$ResvTms");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->resvTms);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_RPT_ID)
     {
         StringUtils_appendString(itemId, 130, "$RptID");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->rptId);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_DATSET)
     {
         StringUtils_appendString(itemId, 130, "$DatSet");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->datSet);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_ENTRY_ID)
     {
         StringUtils_appendString(itemId, 130, "$EntryID");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->entryId);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_OPT_FLDS)
     {
         StringUtils_appendString(itemId, 130, "$OptFlds");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->optFlds);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_BUF_TM)
     {
         StringUtils_appendString(itemId, 130, "$BufTm");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->bufTm);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_TRG_OPS)
     {
         StringUtils_appendString(itemId, 130, "$TrgOps");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->trgOps);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_INTG_PD)
     {
         StringUtils_appendString(itemId, 130, "$IntgPd");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->intgPd);
-
         itemId[itemIdLen] = 0;
     }
 
     if (parametersMask & RCB_ELEMENT_GI)
     {
-        if (parametersMask & RCB_ELEMENT_RPT_ENA)
+        if (parametersMask & RCB_ELEMENT_RPT_ENA)       // 既要使能又要 GI
         {
             if (MmsValue_getBoolean(rcb->rptEna))
                 sendGILast = true;
         }
 
-        if (sendGILast == false)
-        {
+        if (sendGILast == false) {                      // 立刻追加GI
             StringUtils_appendString(itemId, 130, "$GI");
-
             LinkedList_add(itemIds, StringUtils_copyString(itemId));
             LinkedList_add(values, rcb->gi);
-
             itemId[itemIdLen] = 0;
         }
     }
 
-    if (parametersMask & RCB_ELEMENT_PURGE_BUF)
+    if (parametersMask & RCB_ELEMENT_PURGE_BUF)         // 仅 BRCB
     {
         if (!isBuffered)
             goto error_invalid_parameter;
 
         StringUtils_appendString(itemId, 130, "$PurgeBuf");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->purgeBuf);
-
         itemId[itemIdLen] = 0;
     }
 
-    if (parametersMask & RCB_ELEMENT_TIME_OF_ENTRY)
+    if (parametersMask & RCB_ELEMENT_TIME_OF_ENTRY)     // 仅 BRCB
     {
         if (!isBuffered)
             goto error_invalid_parameter;
 
         StringUtils_appendString(itemId, 130, "$TimeofEntry");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->timeOfEntry);
-
         itemId[itemIdLen] = 0;
     }
 
@@ -1388,48 +1362,36 @@ IedConnection_setRCBValues(IedConnection self, IedClientError* error, ClientRepo
         if (parametersMask & RCB_ELEMENT_RPT_ENA)
         {
             StringUtils_appendString(itemId, 130, "$RptEna");
-
             LinkedList_add(itemIds, StringUtils_copyString(itemId));
             LinkedList_add(values, rcb->rptEna);
-
             itemId[itemIdLen] = 0;
         }
     }
 
-    if (sendGILast)
-    {
+    // 在这处理又要使能又要GI的情况, 意图就是把GI放到使能之后 [GI（总召唤）必须在报告使能之后发]
+    if (sendGILast) {
         StringUtils_appendString(itemId, 130, "$GI");
-
         LinkedList_add(itemIds, StringUtils_copyString(itemId));
         LinkedList_add(values, rcb->gi);
-
         itemId[itemIdLen] = 0;
     }
 
-    if (singleRequest)
+    if (singleRequest)      // 单写 一次 MMS 请求写全部成员
     {
         LinkedList accessResults = NULL;
-
         MmsConnection_writeMultipleVariables(self->connection, &mmsError, domainId, itemIds, values, &accessResults);
-
-        if (accessResults)
+        if (accessResults) 
         {
-
             LinkedList accessResult = LinkedList_getNext(accessResults);
-
-            while (accessResult)
-            {
+            while (accessResult) {
                 MmsValue* dataAccessError = (MmsValue*)accessResult->data;
-
                 if (MmsValue_getDataAccessError(dataAccessError) != DATA_ACCESS_ERROR_SUCCESS)
                 {
                     *error = iedConnection_mapDataAccessErrorToIedError(MmsValue_getDataAccessError(dataAccessError));
                     break;
                 }
-
                 accessResult = LinkedList_getNext(accessResult);
             }
-
             LinkedList_destroyDeep(accessResults, (LinkedListValueDeleteFunction)MmsValue_delete);
         }
         else
@@ -1437,25 +1399,20 @@ IedConnection_setRCBValues(IedConnection self, IedClientError* error, ClientRepo
 
         goto exit_function;
     }
-    else
+    else                // 逐条写
     {
         LinkedList itemIdElement = LinkedList_getNext(itemIds);
         LinkedList valueElement = LinkedList_getNext(values);
-
-        while (itemIdElement)
-        {
+        while (itemIdElement) {
             char* rcbItemId = (char*)itemIdElement->data;
             MmsValue* value = (MmsValue*)valueElement->data;
-
             MmsConnection_writeVariable(self->connection, &mmsError, domainId, rcbItemId, value);
-
             if (mmsError != MMS_ERROR_NONE)
                 break;
 
             itemIdElement = LinkedList_getNext(itemIdElement);
             valueElement = LinkedList_getNext(valueElement);
         }
-
         *error = iedConnection_mapMmsErrorToIedError(mmsError);
         goto exit_function;
     }
@@ -1467,3 +1424,5 @@ exit_function:
     LinkedList_destroy(itemIds);
     LinkedList_destroyStatic(values);
 }
+// 写入顺序:  LLN0$RP$EventsRCB01$Resv  → $DatSet → $TrgOps → $RptEna(true) → $GI
+
