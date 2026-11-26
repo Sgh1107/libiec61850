@@ -1131,11 +1131,16 @@ namespace IEC61850.SCL
         {
             get
             {
+                /* IEC 61850-6 中该位的标准属性名是 "integ"，旧版生成器误读 "period"，
+                   导致 XML 里写了 integ="true" 也得不到 0x08 这一位。两者都接受。 */
+                if (XmlHelper.GetAttributeValue(xmlNode, "integ") != null)
+                    return XmlHelper.ParseBooleanAttribute(xmlNode, "integ", false);
+
                 return XmlHelper.ParseBooleanAttribute(xmlNode, "period", false);
             }
             set
             {
-                XmlHelper.SetBooleanAttributeCreateIfNotExists(xmlDocument, xmlNode, "period", value);
+                XmlHelper.SetBooleanAttributeCreateIfNotExists(xmlDocument, xmlNode, "integ", value);
             }
         }
 

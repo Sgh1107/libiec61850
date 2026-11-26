@@ -33,6 +33,9 @@ static int running = 0;                 /* 服务器运行标志 */
 static int activeConnections = 0;       /* 当前活跃连接数 */
 static IedServer iedServer = NULL;      /* 服务器实例 */
 
+// #define SIMULATE_DIGITAL_CHANGE
+// #define SIMULATE_DIGITAL_CHANGE
+
 /**
  * 信号处理函数（Ctrl+C）
  */
@@ -152,7 +155,7 @@ rcbEventHandler(void* parameter, ReportControlBlock* rcb, ClientConnection conne
 
     if(connection == NULL)
     {
-        // printf("[RCB] Connection is NULL, function exit ... ");
+        // printf("[RCB] Connection is NULL, function exit ... \n");
         return;
     }
 
@@ -161,25 +164,25 @@ rcbEventHandler(void* parameter, ReportControlBlock* rcb, ClientConnection conne
     switch (event)
     {
     case RCB_EVENT_ENABLE:
-        printf("[RCB] %s is enabled by client %s", rcbName, peerAddress);
+        printf("[RCB] %s is enabled by client %s\n", rcbName, peerAddress);
         break;
     case RCB_EVENT_DISABLE:
-        printf("[RCB] %s is disabled by client %s", rcbName, peerAddress);
+        printf("[RCB] %s is disabled by client %s\n", rcbName, peerAddress);
         break;
     case RCB_EVENT_SET_PARAMETER:
-        printf("[RCB] %s param changed by client %s", rcbName, peerAddress);
+        printf("[RCB] %s param changed by client %s\n", rcbName, peerAddress);
         break;
     case RCB_EVENT_GET_PARAMETER:
-        printf("[RCB] %s param read by client %s", rcbName, peerAddress);
+        printf("[RCB] %s param read by client %s\n", rcbName, peerAddress);
         break;
     case RCB_EVENT_GI:
-        printf("[RCB] %s recieve（GI）call\n", rcbName);
+        printf("[RCB] %s recieve GI call\n", rcbName);
         break;  
     case RCB_EVENT_REPORT_CREATED:
         printf("[RCB] %s generated a new rpt\n", rcbName);
         break;
     case RCB_EVENT_OVERFLOW:
-        printf("[RCB] %s buffer out of mem！\n", rcbName);
+        printf("[RCB] %s buffer out of mem!\n", rcbName);
         break;   
     case RCB_EVENT_PURGEBUF:
         printf("[RCB] %s buffer cleared\n", rcbName);
@@ -287,17 +290,20 @@ int main(int argc, char** argv)
 
     /* ========== 主循环：生成模拟数据 ========== */
     float t = 0.f;   /* 时间变量，用于生成正弦波 */
-    /* sungh: 遥信变位模拟 —— 每个点周期不同，便于对号 */
+
+#ifdef SIMULATE_DIGITAL_CHANGE
+    /* sungh: 遥信变位模拟 —— 每个点周期不同，便于对号
+     * 与 RCB 报告无关（Ind/Proxy 不在任何 DataSet 中），默认不编译。
+     * 需要恢复这段测试时，在编译选项里加 -DSIMULATE_DIGITAL_CHANGE 即可 */
     int  tickCount = 0;
     int  ind1 = 0, ind2 = 0, ind3 = 0, ind4 = 0, proxy = 0;
+#endif
 
     while (running)
     {
         uint64_t timestamp = Hal_getTimeInMs();
-
         /* 生成 4 路相位不同的正弦波模拟量 */
-        t += 0.1f;
-
+        t += 3.0f;
         float an1 = sinf(t);
         float an2 = sinf(t + 1.f);
         float an3 = sinf(t + 2.f);
@@ -305,7 +311,6 @@ int main(int argc, char** argv)
 
         /* 构造 IEC 61850 时间戳 */
         Timestamp iecTimestamp;
-
         Timestamp_clearFlags(&iecTimestamp);
         Timestamp_setTimeInMilliseconds(&iecTimestamp, timestamp);
         Timestamp_setLeapSecondKnown(&iecTimestamp, true);
@@ -330,6 +335,7 @@ int main(int argc, char** argv)
         IedServer_updateFloatAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_AnIn4_mag_f, an4);
 
 
+#ifdef SIMULATE_DIGITAL_CHANGE
         /* ---- sungh 遥信变位模拟（方案B映射验证用） ---- */
         tickCount++;
         if ((tickCount % 20)  == 0) ind1  = !ind1;   /* 每 2  秒翻 */
@@ -347,11 +353,11 @@ int main(int argc, char** argv)
         IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_Ind4_t, &iecTimestamp);
         IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_GenericIO_GGIO1_Ind4_stVal, ind4);
         IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_GenericIO_LPHD1_Proxy_stVal, proxy);
+#endif
 
         IedServer_unlockDataModel(iedServer);
-
-        /* 每 100ms 更新一次（10Hz 刷新率） */
-        Thread_sleep(100);
+        /* 每 5 秒更新一次（便于观察报告，降低触发频率） */
+        Thread_sleep(5000);
     }
 
     /* ========== 停止服务器并清理资源 ========== */

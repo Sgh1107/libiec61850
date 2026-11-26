@@ -34,3 +34,4 @@ C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Tools\
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Tools\obj\Release\net8.0\Tools.pdb
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Tools\obj\Release\net8.0\Tools.genruntimeconfig.cache
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Tools\obj\Release\net8.0\ref\Tools.dll
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Tools\obj\Release\net8.0\Tools.sourcelink.json

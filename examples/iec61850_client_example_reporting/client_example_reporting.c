@@ -1,7 +1,10 @@
 /*
  * client_example_reporting.c
- * 这个客户端示例用的是非缓存报告块
- * This example is intended to be used with server_example_basic_io or server_example_goose.
+ * 这个客户端示例订阅缓存报告块（BRCB）：server_example_basic_io 静态模型中的 Measurements
+ * 配套服务端：server_example_basic_io（IED 名 simpleIO + LD GenericIO）
+ * 数据集 Measurements：AnIn1~4 的 mag.f 和 q（共 8 个成员）
+ * RCB：LLN0.BR.Measurements01（buffered="true", rptID="Measurements"）
+ * MMS domain = IED 名(simpleIO) + LDevice inst(GenericIO) = simpleIOGenericIO
  */
 
 #include "iec61850_client.h"
@@ -38,6 +41,18 @@ void reportCallbackFunction(void* parameter, ClientReport report)
         printf("  report contains timestamp (%u): %s", (unsigned int) unixTime, timeBuf);
     }
 
+    /* BRCB 报告带 EntryID，可据此做断线续传 */
+    if (ClientReport_getEntryId(report) != NULL) {
+        MmsValue* entryId = ClientReport_getEntryId(report);
+        uint8_t* buf = MmsValue_getOctetStringBuffer(entryId);
+        printf("  entryID: %02x%02x%02x%02x%02x%02x%02x%02x\n",
+               buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
+    }
+
+    /* bufOvfl=true 表示缓存溢出、有报告被淘汰，应考虑触发 GI 重新同步 */
+    if (ClientReport_getBufOvfl(report))
+        printf("  *** buffer overflow: some reports were lost, consider a GI ***\n");
+
     if (dataSetDirectory) {
         int i;
         for (i = 0; i < LinkedList_size(dataSetDirectory); i++) {
@@ -62,6 +77,9 @@ void reportCallbackFunction(void* parameter, ClientReport report)
 
 int main(int argc, char** argv)
 {
+    printf("-------------------------------------------------------------------\n");
+    printf("-------------------   IEC61850 RCB CLI Test   ------------- -------\n");
+    printf("-------------------------------------------------------------------\n");
     char* hostname;
     int tcpPort = 102;
 
@@ -84,51 +102,64 @@ int main(int argc, char** argv)
         ClientDataSet clientDataSet = NULL;
         LinkedList dataSetDirectory = NULL;
 
-        /* read data set directory */
-        dataSetDirectory = IedConnection_getDataSetDirectory(con, &error, "simpleIOGenericIO/LLN0.Events", NULL);
+        /* read data set directory —— 数据集改为 Measurements */
+        dataSetDirectory = IedConnection_getDataSetDirectory(con, &error, "simpleIOGenericIO/LLN0.Measurements", NULL);
         if (error != IED_ERROR_OK) {
             printf("Reading data set directory failed!\n");
         //    goto exit_error;
         }
 
         /* read data set */
-        clientDataSet = IedConnection_readDataSetValues(con, &error, "simpleIOGenericIO/LLN0.Events", NULL);
+        clientDataSet = IedConnection_readDataSetValues(con, &error, "simpleIOGenericIO/LLN0.Measurements", NULL);
         if (clientDataSet == NULL) {
             printf("failed to read dataset\n");
            // goto exit_error;
         }
 
-        /* Read RCB values */
-        rcb = IedConnection_getRCBValues(con, &error, "simpleIOGenericIO/LLN0.RP.EventsRCB01", NULL);
+        /* Read RCB values —— BR 表示 BRCB，实例名带 01 后缀 */
+        rcb = IedConnection_getRCBValues(con, &error, "simpleIOGenericIO/LLN0.BR.Measurements01", NULL);
         if (error != IED_ERROR_OK) {
             printf("getRCBValues service error!\n");
             goto exit_error;
         }
 
-        /* prepare the parameters of the RCP */
-        // 1. 设为 true 表示本客户端要独占这个 RCB，防止别的客户端同时使能它
-        ClientReportControlBlock_setResv(rcb, true);
-        // 2. TrgOps触发条件 [TRG_OPT_DATA_CHANGED 数值变化触发] [TRG_OPT_QUALITY_CHANGED 品质变化触发] [TRG_OPT_GI 响应总召唤触发]
+        /* prepare the parameters of the RCB */
+        // 1. BRCB 没有 Resv（那是 URCB 的），改用 PurgeBuf 清空历史缓存，从头开始收
+        ClientReportControlBlock_setPurgeBuf(rcb, true);
+        // 2. TrgOps触发条件：ICD 里该 BRCB 只写了 period="false"，需由客户端显式指定
         ClientReportControlBlock_setTrgOps(rcb, TRG_OPT_DATA_CHANGED | TRG_OPT_QUALITY_CHANGED | TRG_OPT_GI);
         // 3. DatSet 数据集引用
-        ClientReportControlBlock_setDataSetReference(rcb, "simpleIOGenericIO/LLN0$Events"); /* NOTE the "$" instead of "." ! */
+        ClientReportControlBlock_setDataSetReference(rcb, "simpleIOGenericIO/LLN0$Measurements"); /* NOTE the "$" instead of "." ! */
         // 4. RptEna 报告使能开关打开报告，服务器才开始真正给你发报告
         ClientReportControlBlock_setRptEna(rcb, true);
         // 5. GI 总召唤标志
         ClientReportControlBlock_setGI(rcb, true);
 
         /* Configure the report receiver */
-        IedConnection_installReportHandler(con, "simpleIOGenericIO/LLN0.RP.EventsRCB", ClientReportControlBlock_getRptId(rcb), reportCallbackFunction,
+        IedConnection_installReportHandler(con, "simpleIOGenericIO/LLN0.BR.Measurements01", ClientReportControlBlock_getRptId(rcb), reportCallbackFunction,
                 (void*) dataSetDirectory);
 
-        /* Write RCB parameters and enable report */
+#if 0
+        /* Write RCB parameters and enable report —— 掩码把 RESV 换成 PURGE_BUF */
         // 把rcb发给服务器 -> client_report_control.c 实际执行的就是MMS写操作
-        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_RESV | RCB_ELEMENT_DATSET | RCB_ELEMENT_TRG_OPS | RCB_ELEMENT_RPT_ENA | RCB_ELEMENT_GI, true);
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_PURGE_BUF | RCB_ELEMENT_DATSET | RCB_ELEMENT_TRG_OPS | RCB_ELEMENT_RPT_ENA | RCB_ELEMENT_GI, true);
         if (error != IED_ERROR_OK) {
             printf("setRCBValues service error!\n");
             goto exit_error;
         }
+#endif
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_PURGE_BUF | RCB_ELEMENT_DATSET | RCB_ELEMENT_TRG_OPS, false);
+        if (error != IED_ERROR_OK) {
+            printf("setRCBValues params error!\n");
+            goto exit_error;
+        }
 
+        // 步骤2：单独使能
+        IedConnection_setRCBValues(con, &error, rcb, RCB_ELEMENT_RPT_ENA, true);
+        if (error != IED_ERROR_OK) {
+            printf("setRCBValues enable error!\n");
+            goto exit_error;
+        }
         Thread_sleep(1000);
 
         /* Trigger GI Report */
@@ -169,5 +200,4 @@ exit_error:
     IedConnection_destroy(con);
     return 0;
 }
-
 

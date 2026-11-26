@@ -48,7 +48,13 @@ public class TriggerOptions {
         if (dupdVal != null)
             this.dupd = dupdVal;
 
-        Boolean periodVal = ParserUtils.parseBooleanAttribute(trgOpsNode, "period");
+        /* IEC 61850-6 中该位的标准属性名是 "integ"；旧版误读 "period"，
+           两者都接受（integ 优先），否则 XML 里的 integ="true" 会静默丢位。 */
+        Boolean periodVal = ParserUtils.parseBooleanAttribute(trgOpsNode, "integ");
+
+        if (periodVal == null)
+            periodVal = ParserUtils.parseBooleanAttribute(trgOpsNode, "period");
+
         if (periodVal != null)
             this.period = periodVal;
 

@@ -33,6 +33,11 @@
         <LDevice inst="GenericIO">
           <LN0 lnClass="LLN0" lnType="LLN01" inst="">
 
+            <!--
+              数据集成员顺序 = 报告里元素的顺序，改顺序前先确认接收侧没按下标取值。
+              成员一律指向叶子（mxVal.f / mag.f）而不是结构体本身：结构体会被摊成多个
+              元素，索引含义随之改变。四个成员都是 FLOAT32，接收侧无需额外类型解析。
+            -->
             <DataSet name="SetpointEvents" desc="遥调设定值与实际输出">
               <FCDA ldInst="GenericIO" lnClass="GGIO" fc="MX" lnInst="1" doName="AnOut1" daName="mxVal.f" />
               <FCDA ldInst="GenericIO" lnClass="GGIO" fc="MX" lnInst="1" doName="AnOut1Fb" daName="mag.f" />
@@ -40,10 +45,35 @@
               <FCDA ldInst="GenericIO" lnClass="GGIO" fc="MX" lnInst="1" doName="AnOut2Fb" daName="mag.f" />
             </DataSet>
 
-            <ReportControl name="SetpointRCB" confRev="1" datSet="SetpointEvents" rptID="SetpointEvents" buffered="false" intgPd="1000" bufTime="0" indexed="true">
-              <TrgOps dchg="true" />
-              <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" entryID="true" configRef="true" />
-              <RptEnabled max="2" />
+            <!--
+              报告控制块 SetpointEvents
+
+              TrgOps 五项全开 = 0x1F：
+                dchg=1 qchg=2 dupd=4 integ=8 gi=16
+                - 缺 gi    → 客户端写 GI=true 被静默忽略（启用成功却收不到全量）
+                - 缺 integ → IntgPd 不排程，永远没有周期报告
+              OptFields：seqNum/timeStamp/dataSet/reasonCode/entryID/configRef 全开 = 0xEF
+                （bufOvfl 由生成器默认置位，非缓冲 RCB 下无影响）
+                seqNum 用来判丢报，reasonCode 用来区分 变位/周期/全询，两个都别关。
+                dataRef 是可选项，默认不加：数据集固定 4 个成员、接收侧按下标取值时它只是
+                多占报文；需要"报告自带成员引用、模型改顺序也不用重对齐"时再打开
+                （打开后 OptFlds 变 0xFF）。
+              indexed="false"：
+                生成器只在 indexed="true" 时才按 RptEnabled/max 生成 SetpointRCB01..N，
+                那样客户端用的 setpointIOGenericIO/LLN0.RP.SetpointRCB 反而查不到对象。
+                这里用单实例，RCB 名就是 SetpointRCB，引用可直接对上；
+                同时生成器要求 indexed="false" 时 max 必须为 1，故 RptEnabled max="1"。
+                若确实需要多客户端并发（每客户端一个 RCB 实例），改回 indexed="true" 并把
+                max 调到 4，但客户端引用必须改用 SetpointRCB01..04。
+              intgPd="1000"：只有 TrgOps 含 integ 时才排程；不需要周期报告请写 0
+              bufTime="0"：非缓冲 RCB 下无实际作用，保留
+            -->
+            <ReportControl name="SetpointRCB" desc="遥调报告控制块" confRev="1" datSet="SetpointEvents"
+                           rptID="SetpointEvents" buffered="false" intgPd="1000" bufTime="0" indexed="false">
+              <TrgOps dchg="true" qchg="true" dupd="true" integ="true" gi="true" />
+              <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true"
+                         entryID="true" configRef="true" />
+              <RptEnabled max="1" />
             </ReportControl>
 
             <DOI name="Mod">
@@ -170,8 +200,17 @@
       <BDA name="orIdent" bType="Octet64" />
     </DAType>
 
+    <!--
+      数据集成员指向的是叶子 mxVal.f / mag.f，所以 dchg / dupd 必须声明在
+      叶子（这里的 BDA f）上。生成器只会把 DA/BDA 自己声明的触发位写进模型，
+      声明在父结构 mxVal / mag 上的 dchg 不会被叶子继承。
+      服务端检测变位只看"被 update 的那个属性自己的 triggerOptions"
+      （ied_server.c checkForChangedTriggers），叶子为 0 就不会有变位报告，
+      只剩 GI 和周期报告——这正是"值变了却收不到 dchg"的根因。
+      dupd 打开后，写同样的值也会产生一次 data-update 报告。
+    -->
     <DAType id="AnalogueValue_1">
-      <BDA name="f" bType="FLOAT32" />
+      <BDA name="f" bType="FLOAT32" dchg="true" dupd="true" />
     </DAType>
 
     <EnumType id="CtlModels">

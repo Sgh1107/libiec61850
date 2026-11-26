@@ -1,7 +1,7 @@
 /*
  * static_model.c
  *
- * automatically generated from C:/Users/sungh/Desktop/IEDEX/libiec61850-1.6/examples/server_example_setpoint/setpoint_tests.cid
+ * automatically generated from setpoint_tests.cid
  */
 #include "static_model.h"
 
@@ -731,7 +731,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut1_Oper_ctlVal_f = {
   -1,
   IEC61850_FC_CO,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -857,7 +857,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut1_mxVal_f = {
   -1,
   IEC61850_FC_MX,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -936,7 +936,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut1Fb_mag_f = {
   -1,
   IEC61850_FC_MX,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -1015,7 +1015,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut2_Oper_ctlVal_f = {
   -1,
   IEC61850_FC_CO,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -1141,7 +1141,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut2_mxVal_f = {
   -1,
   IEC61850_FC_MX,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -1220,7 +1220,7 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut2Fb_mag_f = {
   -1,
   IEC61850_FC_MX,
   IEC61850_FLOAT32,
-  0,
+  0 + TRG_OPT_DATA_CHANGED + TRG_OPT_DATA_UPDATE + TRG_OPT_QUALITY_CHANGED,
   NULL,
   0
 };
@@ -1253,30 +1253,15 @@ DataAttribute iedModel_GenericIO_GGIO1_AnOut2Fb_t = {
   0
 };
 extern ReportControlBlock iedModel_GenericIO_LLN0_report0;
-extern ReportControlBlock iedModel_GenericIO_LLN0_report1;
 
 ReportControlBlock iedModel_GenericIO_LLN0_report0 = {
   &iedModel_GenericIO_LLN0,
-  "SetpointRCB01",
+  "SetpointRCB",
   "SetpointEvents",
   false,
   "SetpointEvents",
   1,
-  17,
-  239,
-  0,
-  1000,
-  {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
-  &iedModel_GenericIO_LLN0_report1
-};
-ReportControlBlock iedModel_GenericIO_LLN0_report1 = {
-  &iedModel_GenericIO_LLN0,
-  "SetpointRCB02",
-  "SetpointEvents",
-  false,
-  "SetpointEvents",
-  1,
-  17,
+  31,
   239,
   0,
   1000,

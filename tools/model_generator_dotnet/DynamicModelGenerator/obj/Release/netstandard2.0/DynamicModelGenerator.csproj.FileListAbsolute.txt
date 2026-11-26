@@ -11,3 +11,4 @@ C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\Dynami
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\DynamicModelGenerator\obj\Release\netstandard2.0\DynamicM.1D5DDDB4.Up2Date
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\DynamicModelGenerator\obj\Release\netstandard2.0\DynamicModelGenerator.dll
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\DynamicModelGenerator\obj\Release\netstandard2.0\DynamicModelGenerator.pdb
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\DynamicModelGenerator\obj\Release\netstandard2.0\DynamicModelGenerator.sourcelink.json

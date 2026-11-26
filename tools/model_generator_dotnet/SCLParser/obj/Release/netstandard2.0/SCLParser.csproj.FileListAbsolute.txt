@@ -8,3 +8,4 @@ C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLPar
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.csproj.CoreCompileInputs.cache
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.dll
 C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.pdb
+C:\Users\sungh\Desktop\IEDEX\libiec61850-1.6\tools\model_generator_dotnet\SCLParser\obj\Release\netstandard2.0\SCLParser.sourcelink.json

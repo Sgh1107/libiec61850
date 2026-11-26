@@ -1,7 +1,7 @@
 /*
  * static_model.h
  *
- * automatically generated from C:/Users/sungh/Desktop/IEDEX/libiec61850-1.6/examples/server_example_setpoint/setpoint_tests.cid
+ * automatically generated from setpoint_tests.cid
  */
 
 #ifndef STATIC_MODEL_H_
