@@ -89,6 +89,23 @@ static unsigned int originalConsoleInputCP = 0;
 
 static SetpointChannel channels[2];
 
+/*
+ * 从 RCB 事件回调里记下来的订阅状态。
+ * 1.6 没有"服务端读 RCB 值"的接口，所以只能靠事件维护一份影子状态，
+ * 好处是手动改值时能顺手看一眼"到底有没有客户端订着"。
+ */
+typedef struct {
+    char peer[64];              /* 最近一次持预留/启用的对端地址 */
+    bool reserved;
+    bool enabled;
+    uint32_t reports;           /* REPORT_CREATED 累计 */
+    uint64_t lastReportMs;
+} RcbState;
+
+static RcbState rcbState;
+
+static Thread consoleThread = NULL;
+
 static void
 initConsoleEncoding(void)
 {
@@ -133,6 +150,67 @@ getAttributeFloat(DataAttribute* attr)
     return 0.f;
 }
 
+/*
+ * 写设定值：控制台手动输入和客户端 operate 走同一条路。
+ *
+ * 必须用 IedServer_update* 接口（1.6 的变位检测只在这些接口内部登记），
+ * 并且和 updateOutputs() 用同一把模型锁，避免发出"新值 + 旧时标"的报告。
+ */
+static bool
+applySetpoint(SetpointChannel* channel, float newValue)
+{
+    if ((newValue < SETPOINT_MIN) || (newValue > SETPOINT_MAX)) {
+        printf("  [拒绝] %s 超出量程 [%.0f, %.0f]，%.2f 未写入\n",
+                channel->name, SETPOINT_MIN, SETPOINT_MAX, newValue);
+        fflush(stdout);
+        return false;
+    }
+
+    IedServer_lockDataModel(iedServer);
+
+    IedServer_updateFloatAttributeValue(iedServer, channel->setpoint, newValue);
+    IedServer_updateUTCTimeAttributeValue(iedServer, channel->setpointTime, Hal_getTimeInMs());
+
+    channel->target = newValue;
+
+    if (newValue != channel->output) {
+        channel->stepSize = (newValue - channel->output) / (float) OUTPUT_FOLLOW_STEPS;
+        channel->stepsRemaining = OUTPUT_FOLLOW_STEPS;
+        channel->followed = false;
+    }
+    else {
+        /* 值没变：只产生一条 data-update 报告（验证 dupd 用） */
+        channel->stepSize = 0.f;
+        channel->stepsRemaining = 0;
+        channel->followed = true;
+    }
+
+    IedServer_unlockDataModel(iedServer);
+
+    return true;
+}
+
+/*
+ * 直接写反馈值：绕过"跟随"逻辑，一次只产生一条变位报告。
+ * 核对客户端 RCB 的 seqNum / reason / 成员顺序时用这个最省事。
+ *
+ * 软件侧的 output 也要同步，否则下一次遥调会从旧值开始爬。
+ */
+static void
+applyFeedback(SetpointChannel* channel, float newValue)
+{
+    IedServer_lockDataModel(iedServer);
+
+    IedServer_updateFloatAttributeValue(iedServer, channel->feedback, newValue);
+    IedServer_updateUTCTimeAttributeValue(iedServer, channel->feedbackTime, Hal_getTimeInMs());
+
+    channel->output = newValue;
+    channel->stepsRemaining = 0;
+    channel->followed = true;
+
+    IedServer_unlockDataModel(iedServer);
+}
+
 void
 sigint_handler(int signalId)
 {
@@ -149,7 +227,6 @@ static ControlHandlerResult
 controlHandlerForSetpoint(ControlAction action, void* parameter, MmsValue* value, bool test)
 {
     SetpointChannel* channel = (SetpointChannel*) parameter;
-    uint64_t timestamp = Hal_getTimeInMs();
     ClientConnection clientCon = ControlAction_getClientConnection(action);
     const char* peer = (clientCon != NULL) ? ClientConnection_getPeerAddress(clientCon) : "(local)";
 
@@ -172,39 +249,13 @@ controlHandlerForSetpoint(ControlAction action, void* parameter, MmsValue* value
             ControlAction_getCtlNum(action),
             test ? ", Test" : "");
 
-    if ((newValue < SETPOINT_MIN) || (newValue > SETPOINT_MAX)) {
-        printf("           ↳ 超出量程 [%.0f, %.0f]，拒绝\n", SETPOINT_MIN, SETPOINT_MAX);
-
+    if (!applySetpoint(channel, newValue)) {
         /* 把拒绝原因随 CommandTermination- / LastApplError 一起带回客户端 */
         ControlAction_setAddCause(action, ADD_CAUSE_INVALID_POSITION);
 
         fflush(stdout);
         return CONTROL_RESULT_FAILED;
     }
-
-    /* 两个属性必须在同一把模型锁里更新，否则报告线程可能在两次更新之间取样，
-       发出"新值 + 旧时标"的组合；与 updateOutputs() 的做法保持一致。
-       跟随状态（target/stepSize/stepsRemaining）也用同一把锁保护，
-       避免控制线程与主循环同时改这组字段。 */
-    IedServer_lockDataModel(iedServer);
-
-    IedServer_updateFloatAttributeValue(iedServer, channel->setpoint, newValue);
-    IedServer_updateUTCTimeAttributeValue(iedServer, channel->setpointTime, timestamp);
-
-    channel->target = newValue;
-
-    if (newValue != channel->output) {
-        channel->stepSize = (newValue - channel->output) / (float) OUTPUT_FOLLOW_STEPS;
-        channel->stepsRemaining = OUTPUT_FOLLOW_STEPS;
-        channel->followed = false;
-    }
-    else {
-        channel->stepSize = 0.f;
-        channel->stepsRemaining = 0;
-        channel->followed = true;
-    }
-
-    IedServer_unlockDataModel(iedServer);
 
     fflush(stdout);
 
@@ -287,11 +338,46 @@ rcbEventName(IedServer_RCBEventType event)
     }
 }
 
+/* 记一份订阅影子状态，供控制台 `s` 命令显示 */
+static void
+updateRcbState(ClientConnection con, IedServer_RCBEventType event)
+{
+    switch (event) {
+    case RCB_EVENT_RESERVED:
+        rcbState.reserved = true;
+        break;
+    case RCB_EVENT_ENABLE:
+        rcbState.enabled = true;
+        break;
+    case RCB_EVENT_DISABLE:
+        rcbState.enabled = false;
+        break;
+    case RCB_EVENT_UNRESERVED:
+        /* 断链清理时 con 是 NULL，这里不要把对端地址清成 "(null)" */
+        rcbState.reserved = false;
+        rcbState.enabled = false;
+        break;
+    case RCB_EVENT_REPORT_CREATED:
+        rcbState.reports++;
+        rcbState.lastReportMs = Hal_getTimeInMs();
+        return;
+    default:
+        return;
+    }
+
+    if (con != NULL)
+        snprintf(rcbState.peer, sizeof(rcbState.peer), "%s", ClientConnection_getPeerAddress(con));
+    else if (!rcbState.reserved && !rcbState.enabled)
+        snprintf(rcbState.peer, sizeof(rcbState.peer), "(连接已断开)");
+}
+
 static void
 rcbEventHandler(void* parameter, ReportControlBlock* rcb, ClientConnection con,
         IedServer_RCBEventType event, const char* parameterName, MmsDataAccessError serviceError)
 {
     char errorText[16];
+
+    updateRcbState(con, event);
 
     /* 注意 MmsDataAccessError 是负数枚举：-1 = 成功、-3 = 成功但值未变化，
        只有 >= 0 才是真正的错误码。这里直接翻成人话，免得把成功误读成"err!=0"。 */
@@ -327,6 +413,155 @@ connectionIndicationHandler(IedServer server, ClientConnection connection, bool 
 }
 
 static void
+printCommandHelp(void)
+{
+    printf("-------------------------------------------------------------\n");
+    printf(" 手动改值（测客户端 RCB 用，服务端运行中随时可输入）:\n");
+    printf("   1 <值>   写 AnOut1 设定值（带动反馈跟随，约 %d 条变位报告）\n", OUTPUT_FOLLOW_STEPS);
+    printf("   2 <值>   写 AnOut2 设定值\n");
+    printf("   3 <值>   直接写 AnOut1Fb 反馈（1 条变位报告，最好核对 seqNum）\n");
+    printf("   4 <值>   直接写 AnOut2Fb 反馈\n");
+    printf("   s        打印四个点当前值 + 报告订阅状态\n");
+    printf("   ?        重印本说明          q  退出服务端\n");
+    printf(" 例：1 250    重复写同一个值 -> 只出 data-update 报告（验证 dupd）\n");
+    printf("-------------------------------------------------------------\n");
+    fflush(stdout);
+}
+
+static void
+printSnapshot(void)
+{
+    int i;
+
+    printf("  ---- 当前值 ----\n");
+
+    IedServer_lockDataModel(iedServer);
+
+    for (i = 0; i < 2; i++) {
+        printf("   [%d] %-16s 设定 %8.2f   反馈 %8.2f\n", i + 1, channels[i].name,
+                getAttributeFloat(channels[i].setpoint), getAttributeFloat(channels[i].feedback));
+    }
+
+    IedServer_unlockDataModel(iedServer);
+
+    printf("  ---- 报告订阅（按 RCB 事件推出来的） ----\n");
+    printf("   RCB setpointIOGenericIO/LLN0.RP.SetpointRCB\n");
+    printf("   预留 %s   启用 %s   对端 %s\n",
+            rcbState.reserved ? "是" : "否",
+            rcbState.enabled ? "是" : "否",
+            (rcbState.peer[0] != 0) ? rcbState.peer : "-");
+
+    if (rcbState.reports > 0)
+        printf("   报告累计 %u 条，最后一条 %.2f 秒前\n", rcbState.reports,
+                (Hal_getTimeInMs() - rcbState.lastReportMs) / 1000.0);
+    else
+        printf("   报告累计 0 条（还没有客户端订阅成功）\n");
+
+    fflush(stdout);
+}
+
+/*
+ * 控制台线程：阻塞在 fgets 上收命令。
+ *
+ * 之所以单开一条线程，是因为主循环每 CONTROL_CYCLE_MS 跑一次 updateOutputs()，
+ * 主线程里做阻塞读会把反馈跟随和退出处理都卡住。
+ * 写入值仍然走 applySetpoint / applyFeedback，并且自带模型锁，
+ * 和控制线程、报告线程互不干扰。
+ */
+static void*
+consoleThreadMain(void* parameter)
+{
+    char line[128];
+
+    (void) parameter;
+
+    for (;;) {
+        int index = 0;
+        float value = 0.f;
+
+        printf("> ");
+        fflush(stdout);
+
+        if (fgets(line, sizeof(line), stdin) == NULL) {
+            printf("\n[控制台] 标准输入已结束，手动改值功能停止（服务端继续运行）\n");
+            fflush(stdout);
+            return NULL;
+        }
+
+        line[strcspn(line, "\r\n")] = 0;
+
+        if (line[0] == 0)
+            continue;
+
+        if ((line[0] == 'q') || (line[0] == 'Q')) {
+            printf("[控制台] 退出\n");
+            fflush(stdout);
+            running = 0;
+            return NULL;
+        }
+
+        if ((line[0] == 's') || (line[0] == 'S')) {
+            printSnapshot();
+            continue;
+        }
+
+        if ((line[0] == '?') || (line[0] == 'h') || (line[0] == 'H')) {
+            printCommandHelp();
+            continue;
+        }
+
+        /* 手动解析 "<编号> <值>"，避免 sscanf 在 MSVC 下的 C4996 警告 */
+        {
+            char* end = NULL;
+
+            index = (int) strtol(line, &end, 10);
+
+            if ((end == NULL) || (end == line)) {
+                printf("  没看懂 \"%s\"，格式是  <编号> <值>，例如  1 250（? 看说明）\n", line);
+                fflush(stdout);
+                continue;
+            }
+
+            char* start = end;
+
+            value = (float) strtod(start, &end);
+
+            if (end == start) {
+                printf("  缺少数值，格式是  <编号> <值>，例如  1 250（? 看说明）\n");
+                fflush(stdout);
+                continue;
+            }
+        }
+
+        if ((index < 1) || (index > 4)) {
+            printf("  编号只支持 1~4（? 看说明）\n");
+            fflush(stdout);
+            continue;
+        }
+
+        if (index <= 2) {
+            SetpointChannel* channel = &channels[index - 1];
+
+            if (applySetpoint(channel, value)) {
+                printf("[%7.2fs] [手动] %s 设定值 -> %.2f%s\n", elapsedSeconds(), channel->name, value,
+                        (channel->stepsRemaining > 0) ? "（反馈开始跟随）"
+                                                      : "（值未变，只出 data-update 报告）");
+            }
+        }
+        else {
+            SetpointChannel* channel = &channels[index - 3];
+
+            applyFeedback(channel, value);
+
+            printf("[%7.2fs] [手动] %s 反馈值 -> %.2f（直接写，不触发跟随）\n",
+                    elapsedSeconds(), channel->name, value);
+        }
+
+        fflush(stdout);
+    }
+}
+
+static void
 printMenu(int tcpPort)
 {
     printf("\n");
@@ -348,11 +583,11 @@ printMenu(int tcpPort)
     printf(" 报告控制块（非缓冲 URCB）:\n");
     printf("   setpointIOGenericIO/LLN0.RP.SetpointRCB\n");
     printf("   数据集 LLN0$SetpointEvents（4 个 FLOAT32 叶子）\n");
-    printf("   TrgOps 0x1F(dchg/qchg/dupd/integ/gi)  OptFields 0xFF  IntgPd 1000ms\n");
+    printf("   TrgOps 0x1F(dchg/qchg/dupd/integ/gi)  OptFields 0xEF  IntgPd 1000ms\n");
     printf("   启用规范的顺序：同一次 Set 里先 RptEna=true，再 GI=true\n");
     printf("   服务端会把 RCB 事件（RESERVED/ENABLE/GI/REPORT_CREATED...）打到下面\n");
-    printf("-------------------------------------------------------------\n");
-    printf(" Ctrl+C 退出\n");
+    printCommandHelp();
+    printf(" Ctrl+C 也可以退出\n");
     printf("=============================================================\n\n");
     fflush(stdout);
 }
@@ -427,6 +662,17 @@ main(int argc, char** argv)
     running = 1;
 
     printMenu(tcpPort);
+
+    /*
+     * 控制台命令跑在独立线程里。autodestroy = true：退出时它多半还阻塞在 fgets 上，
+     * 不做 join（join 会一直等键盘输入），进程结束时随之一并结束。
+     */
+    consoleThread = Thread_create(consoleThreadMain, NULL, true);
+
+    if (consoleThread != NULL)
+        Thread_start(consoleThread);
+    else
+        printf("[控制台] 线程创建失败，手动改值功能不可用\n");
 
     signal(SIGINT, sigint_handler);
 

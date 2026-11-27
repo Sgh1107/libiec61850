@@ -94,9 +94,15 @@ RptEna=false → DISABLE；Resv=false → UNRESERVED；随即重新启用 → �
 强杀客户端进程 → 服务端自动 DISABLE + UNRESERVED，重连后可立即重新启用
 ```
 
-> 已知的接收侧现象：变位报告里 `reason` 有时被 libiec61850 1.6 的**客户端**解成
-> `UNKNOWN(32)`（GI / 周期报告的 reason 正常）。服务端日志的 `REPORT_CREATED` 与报告里的
-> 值、`seqNum` 都是对的，判断"报告为什么来"时可以先看服务端事件，不要只看客户端解出来的 reason。
+> 已知的接收侧现象（两条，都是库行为，不是模型配错）：
+>
+> 1. 变位报告里 `reason` 有时被 libiec61850 1.6 的**客户端**解成 `UNKNOWN(32)`
+>    （GI / 周期报告的 reason 正常）。服务端日志的 `REPORT_CREATED` 与报告里的值、`seqNum`
+>    都是对的，判断"报告为什么来"时可以先看服务端事件，不要只看客户端解出来的 reason。
+> 2. 非缓冲 RCB 发第一条报告时，服务端会**就地改写** RCB 的 `OptFlds`
+>    （`reporting.c` 把 bufOvfl、entryID 两位清掉，这两项只对 BRCB 有意义）。
+>    所以模型写的 `0xEF` 在客户端订阅后可能读回 `0x8F`；这不是你的写操作失败。
+>    诊断客户端时建议只比对 `TrgOps / IntgPd / DatSet / RptEna`，`OptFlds` 只看 `reason`、`seqNum` 位。
 
 ## 运行
 
@@ -108,10 +114,50 @@ RptEna=false → DISABLE；Resv=false → UNRESERVED；随即重新启用 → �
 
 ```
 [   2.83s] [CTRL] 来自 127.0.0.1:54970 遥调 GGIO1.AnOut1: 0.00 -> 250.00  (ctlNum=1)
-[   7.78s] [FOLLOW] GGIO1.AnOut1 实际输出已跟随到 250.00
+[   2.95s] [FOLLOW] GGIO1.AnOut1 实际输出已跟随到 250.00
 [  14.87s] [CTRL] 来自 127.0.0.1:54970 遥调 GGIO1.AnOut1: 250.00 -> 2000.00  (ctlNum=2)
-           ↳ 超出量程 [0, 1000]，拒绝
+  [拒绝] GGIO1.AnOut1 超出量程 [0, 1000]，2000.00 未写入
 ```
+
+## 手动改值（测客户端 RCB 用）
+
+服务端跑起来后可以直接在它的终端里敲命令改值，用来观察客户端收报告是否正确，
+不用每次去写一个 operate 报文：
+
+| 命令 | 作用 |
+|---|---|
+| `1 <值>` | 写 `AnOut1.mxVal.f`（设定值，0~1000），反馈会分 6 步跟随 → **6 条变位报告** |
+| `2 <值>` | 写 `AnOut2.mxVal.f` |
+| `3 <值>` | **直接**写 `AnOut1Fb.mag.f`（绕过跟随）→ **1 条变位报告** |
+| `4 <值>` | 直接写 `AnOut2Fb.mag.f` |
+| `s` | 打印四个点当前值 + 报告订阅状态（预留/启用/对端/累计报告数） |
+| `?` | 重印命令说明 |
+| `q` | 退出服务端（等同 Ctrl+C） |
+
+```
+> 1 250
+[   6.12s] [手动] GGIO1.AnOut1 设定值 -> 250.00（反馈开始跟随）
+> 3 700
+[   9.44s] [手动] GGIO1.AnOut1Fb 反馈值 -> 700.00（直接写，不触发跟随）
+> s
+  ---- 当前值 ----
+   [1] GGIO1.AnOut1     设定   250.00   反馈   250.00
+   [2] GGIO1.AnOut2     设定     0.00   反馈     0.00
+  ---- 报告订阅（按 RCB 事件推出来的） ----
+   RCB setpointIOGenericIO/LLN0.RP.SetpointRCB
+   预留 是   启用 是   对端 127.0.0.1:56746
+   报告累计 14 条，最后一条 0.31 秒前
+```
+
+几点设计上的取舍：
+
+- **命令跑在独立线程**。主循环每 100 ms 跑一次 `updateOutputs()`，在主线程里阻塞读 stdin
+  会把反馈跟随和退出都卡住。
+- **写入走 `applySetpoint()` / `applyFeedback()`**，与控制处理函数共用同一条路径，
+  都带 `lockDataModel/unlock` 且走 `IedServer_update*`——否则不会产生报告（见 4.4）。
+- **区分"写设定值"和"写反馈值"**：前者是 6 条报告，后者正好 1 条，核对 `seqNum` 递增最方便。
+- 重复写同一个值不会产生变位报告，只会产生一条 **data-update** 报告（验证 `dupd` 用）。
+- 订阅状态是服务端从 RCB 事件里自己记的：1.6 没有"服务端读 RCB 值"的接口。
 
 ## 客户端写法
 
